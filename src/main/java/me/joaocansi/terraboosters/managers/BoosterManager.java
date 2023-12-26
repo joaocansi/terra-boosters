@@ -59,4 +59,8 @@ public class BoosterManager {
 
         return true;
     }
+
+    public Booster getBoosterByPlayerSkill(Player player, String skill) {
+        return boosters.get(player.getUniqueId().toString(), skill);
+    }
 }

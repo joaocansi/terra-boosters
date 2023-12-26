@@ -4,6 +4,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import me.joaocansi.terraboosters.commands.BoostersCommand;
 import me.joaocansi.terraboosters.database.BoosterDatabase;
+import me.joaocansi.terraboosters.listeners.BoosterExperienceListener;
+import me.joaocansi.terraboosters.listeners.BoosterMcMMOExperienceListener;
 import me.joaocansi.terraboosters.listeners.BoosterInteractListener;
 import me.joaocansi.terraboosters.managers.BoosterManager;
 import me.joaocansi.terraboosters.managers.BoosterProductManager;
@@ -35,6 +37,8 @@ public final class Main extends JavaPlugin {
 
         Objects.requireNonNull(getCommand("boosters")).setExecutor(new BoostersCommand());
         getServer().getPluginManager().registerEvents(new BoosterInteractListener(), this);
+        getServer().getPluginManager().registerEvents(new BoosterMcMMOExperienceListener(), this);
+        getServer().getPluginManager().registerEvents(new BoosterExperienceListener(), this);
     }
     @Override
     public void onDisable() {

@@ -3,7 +3,7 @@ boosters:
     name: "&d&lMINER"
     duration: 3600
     multiplication: 2
-    skill: MCMMO_MINING
+    skill: MINING
     item:
       id: EXPERIENCE_BOTTLE
       name: '&e&lBOOSTER'

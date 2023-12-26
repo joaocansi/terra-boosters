@@ -13,5 +13,5 @@ public class BoosterProduct {
     private String skill;
     private ItemStack item;
     private long duration;
-    private long multiplication;
+    private float multiplication;
 }

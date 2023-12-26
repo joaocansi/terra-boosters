@@ -37,7 +37,7 @@ public class BoosterProductManager {
 
             String name = config.getString(path + ".name");
             String skill = config.getString(path + ".skill");
-            long multiplication = config.getLong(path + ".multiplication");
+            float multiplication = (float)config.getDouble(path + ".multiplication");
             long duration = config.getLong(path + ".duration");
             ItemStack item = new ItemBuilder(path + ".item").toItemStack();
 
@@ -86,5 +86,9 @@ public class BoosterProductManager {
             if (boosterProduct.getItem().isSimilar(item))
                 return boosterProduct;
         return null;
+    }
+
+    public float getBoosterMultiplicationById(String boosterId) {
+        return boostersProducts.get(boosterId).getMultiplication();
     }
 }
