@@ -1,0 +1,19 @@
+boosters:
+  0:
+    name: "&d&lMINER"
+    duration: 3600
+    multiplication: 2
+    skill: MCMMO_MINING
+    item:
+      id: EXPERIENCE_BOTTLE
+      name: '&e&lBOOSTER'
+      description:
+        - '&7Type: &d&lMINER (MCMMO)'
+        - ''
+        - ' &8* &aWith this booster, you will'
+        - ' &areceive 2.0x more than usual'
+        - ''
+        - ' &7Multiplier: &f2.0x'
+        - ' &7Duration: &f1 hour'
+        - ''
+      glow: true

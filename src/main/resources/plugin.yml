@@ -1,0 +1,7 @@
+name: TerraBoosters
+version: '${project.version}'
+main: me.joaocansi.terraboosters.Main
+api-version: '1.19'
+softdepend: [mcMMO]
+commands:
+  boosters:
