@@ -16,9 +16,7 @@ public class BoosterMcMMOExperienceListener implements Listener {
         if (booster == null)
             return;
 
-        p.sendMessage(e.getRawXpGained() + "");
         float multiplication = Main.getBoosterProductManager().getBoosterMultiplicationById(booster.getBoosterId());
         e.setRawXpGained(e.getRawXpGained()*multiplication);
-        p.sendMessage(e.getRawXpGained() + "");
     }
 }

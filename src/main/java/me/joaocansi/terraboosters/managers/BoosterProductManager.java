@@ -3,9 +3,11 @@ package me.joaocansi.terraboosters.managers;
 import lombok.Getter;
 import lombok.Setter;
 import me.joaocansi.terraboosters.Main;
+import me.joaocansi.terraboosters.entities.Booster;
 import me.joaocansi.terraboosters.entities.BoosterProduct;
 import me.joaocansi.terraboosters.utils.console.Console;
 import me.joaocansi.terraboosters.utils.items.ItemBuilder;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 @Getter @Setter
 public class BoosterProductManager {
@@ -35,7 +38,7 @@ public class BoosterProductManager {
         for (String key : section.getKeys(false)) {
             String path = "boosters." + key;
 
-            String name = config.getString(path + ".name");
+            String name = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString(path + ".name")));
             String skill = config.getString(path + ".skill");
             float multiplication = (float)config.getDouble(path + ".multiplication");
             long duration = config.getLong(path + ".duration");
@@ -49,18 +52,24 @@ public class BoosterProductManager {
     }
 
     public boolean giveBooster(CommandSender from, Player to, String boosterId, int amount) {
-        if (!boostersProducts.containsKey(boosterId)) {
-            from.sendMessage("Booster '" + boosterId + "' not found.");
-            return false;
-        }
-
-        ItemStack item = boostersProducts.get(boosterId).getItem();
-        item.setAmount(amount);
-
         if (to == null || !to.isOnline()) {
-            from.sendMessage("Player not found or is not online.");
+            Main.getMessageManager().getMessage("player_not_online").send(from, message -> message
+                    .replace("{boosterId}", boosterId)
+                    .replace("{boosterAmount}", String.valueOf(amount)));
             return false;
         }
+
+        if (!boostersProducts.containsKey(boosterId)) {
+            Main.getMessageManager().getMessage("booster_not_found").send(from, message -> message
+                    .replace("{boosterId}", boosterId)
+                    .replace("{boosterAmount}", String.valueOf(amount))
+                    .replace("{receiverName}", to.getName()));
+            return false;
+        }
+
+        BoosterProduct booster = boostersProducts.get(boosterId);
+        ItemStack item = booster.getItem();
+        item.setAmount(amount);
 
         int freeSpace = 0;
         int maxItemStack = item.getMaxStackSize();
@@ -72,12 +81,24 @@ public class BoosterProductManager {
                 freeSpace += maxItemStack - inventoryItem.getAmount();
 
         if (freeSpace < amount) {
-            from.sendMessage("Player's inventory is full.");
+            Main.getMessageManager().getMessage("player_inventory_full").send(from, message -> message
+                    .replace("{boosterName}", booster.getName())
+                    .replace("{boosterSkill}", booster.getSkill())
+                    .replace("{boosterDuration}", String.valueOf(booster.getDuration()))
+                    .replace("{boosterId}", boosterId)
+                    .replace("{boosterAmount}", String.valueOf(amount))
+                    .replace("{receiverName}", to.getName()));
             return false;
         }
 
         to.getInventory().addItem(item);
-        from.sendMessage("You gave " + amount + " boosters to " + to.getDisplayName() + ".");
+        Main.getMessageManager().getMessage("booster_gave").send(from, message -> message
+                .replace("{boosterName}", booster.getName())
+                .replace("{boosterSkill}", booster.getSkill())
+                .replace("{boosterDuration}", String.valueOf(booster.getDuration()))
+                .replace("{boosterId}", boosterId)
+                .replace("{boosterAmount}", String.valueOf(amount))
+                .replace("{receiverName}", to.getName()));
         return true;
     }
 
@@ -90,5 +111,9 @@ public class BoosterProductManager {
 
     public float getBoosterMultiplicationById(String boosterId) {
         return boostersProducts.get(boosterId).getMultiplication();
+    }
+
+    public String getBoosterSkillById(String boosterId) {
+        return boostersProducts.get(boosterId).getSkill();
     }
 }

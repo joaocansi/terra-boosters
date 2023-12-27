@@ -1,3 +1,18 @@
+messages:
+  give_booster_syntax: "&a&l[TerraBoosters] &e/boosters give <player> <booster> <amount>"
+  command_only_ingame: "&a&l[TerraBoosters] &cThis is an exclusive command for in-game players."
+  booster_not_found: "&a&l[TerraBoosters] &cBooster {boosterId} not found."
+  player_not_online: "&a&l[TerraBoosters] &cPlayer not found."
+  player_inventory_full: "&a&l[TerraBoosters] &cPlayer {playerName} is full of items."
+  booster_gave: "&a&l[TerraBoosters] &eYou gave {boosterAmount}x {boosterName} &eboosters to {receiverName}"
+  booster_already_in_use: "&a&l[TerraBoosters]{@}&cThere's a booster with the same skill running."
+  booster_consumed: "&a&l[TerraBoosters]{@}&eBooster {boosterName} &estarted and will expire in {boosterExpiration}"
+
+settings:
+  date_format: "dd/MM/yyyy HH:mm"
+  storage:
+    type: SQL
+
 boosters:
   0:
     name: "&d&lMINER"

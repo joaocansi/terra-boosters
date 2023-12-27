@@ -9,6 +9,8 @@ import me.joaocansi.terraboosters.listeners.BoosterMcMMOExperienceListener;
 import me.joaocansi.terraboosters.listeners.BoosterInteractListener;
 import me.joaocansi.terraboosters.managers.BoosterManager;
 import me.joaocansi.terraboosters.managers.BoosterProductManager;
+import me.joaocansi.terraboosters.managers.MessageManager;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
@@ -23,6 +25,9 @@ public final class Main extends JavaPlugin {
     @Getter(AccessLevel.PUBLIC)
     private static BoosterProductManager boosterProductManager;
 
+    @Getter(AccessLevel.PUBLIC)
+    private static MessageManager messageManager;
+
     @Getter
     private BoosterDatabase boosterDatabase;
 
@@ -34,6 +39,7 @@ public final class Main extends JavaPlugin {
         boosterDatabase = new BoosterDatabase();
         boosterProductManager = new BoosterProductManager();
         boosterManager = new BoosterManager(boosterDatabase);
+        messageManager = new MessageManager();
 
         Objects.requireNonNull(getCommand("boosters")).setExecutor(new BoostersCommand());
         getServer().getPluginManager().registerEvents(new BoosterInteractListener(), this);
