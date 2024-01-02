@@ -13,7 +13,7 @@ public class BoostersCommand implements CommandExecutor {
     public boolean onCommand(@NonNull CommandSender sender, @NonNull Command cmd, @NonNull String label, String[] args) {
         if (args.length > 0 && args[0].equalsIgnoreCase("give") && sender.hasPermission("terraboosters.admin")) {
             if (args.length != 4) {
-                Main.getMessageManager().getMessage("give_booster_syntax").send(sender);
+                Main.getMessageManager().getMessage("command_booster_give_syntax").send(sender);
                 return false;
             }
 
@@ -24,7 +24,7 @@ public class BoostersCommand implements CommandExecutor {
             try {
                 amount = Integer.parseInt(args[3]);
             } catch (NumberFormatException e) {
-                Main.getMessageManager().getMessage("give_booster_syntax").send(sender);
+                Main.getMessageManager().getMessage("command_booster_give_syntax").send(sender);
                 return false;
             }
 
@@ -32,6 +32,7 @@ public class BoostersCommand implements CommandExecutor {
         }
 
         if (!(sender instanceof Player)) {
+            Main.getMessageManager().getMessage("command_in_game_only").send(sender);
             return false;
         }
 

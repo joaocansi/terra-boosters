@@ -113,6 +113,10 @@ public class BoosterProductManager {
         return boostersProducts.get(boosterId).getMultiplication();
     }
 
+    public BoosterProduct getBoosterProductById(String id) {
+        return this.boostersProducts.get(id);
+    }
+
     public String getBoosterSkillById(String boosterId) {
         return boostersProducts.get(boosterId).getSkill();
     }

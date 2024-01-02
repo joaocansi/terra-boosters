@@ -9,10 +9,16 @@ import me.joaocansi.terraboosters.entities.Booster;
 import me.joaocansi.terraboosters.entities.BoosterProduct;
 import me.joaocansi.terraboosters.utils.console.Console;
 import me.joaocansi.terraboosters.utils.date.DateFormatter;
+import me.joaocansi.terraboosters.utils.skill.SkillTranslator;
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Getter @Setter
 public class BoosterManager {
@@ -57,25 +63,53 @@ public class BoosterManager {
         if (findBooster != null) {
             Main.getMessageManager().getMessage("booster_already_in_use").send(player, message -> message
                     .replace("{boosterName}", boosterProduct.getName())
-                    .replace("{boosterSkill}", boosterProduct.getSkill())
-                    .replace("{boosterExpiration}", expirationDate.toString()));
+                    .replace("{boosterSkill}", SkillTranslator.translate(boosterProduct.getSkill()))
+                    .replace("{boosterExpiration}", DateFormatter.format(expirationDate)));
             return false;
         }
 
         if (!boosterDatabase.insert(newBooster)) {
+            Main.getMessageManager().getMessage("booster_consuming_error").send(player, message -> message
+                    .replace("{boosterName}", boosterProduct.getName())
+                    .replace("{boosterSkill}", SkillTranslator.translate(boosterProduct.getSkill()))
+                    .replace("{boosterExpiration}", DateFormatter.format(expirationDate)));
             return false;
         }
 
-        Main.getMessageManager().getMessage("booster_consumed").send(player, message -> message
+        Main.getMessageManager().getMessage("booster_consuming_success").send(player, message -> message
                 .replace("{boosterName}", boosterProduct.getName())
-                .replace("{boosterSkill}", boosterProduct.getSkill())
+                .replace("{boosterSkill}", SkillTranslator.translate(boosterProduct.getSkill()))
                 .replace("{boosterExpiration}", DateFormatter.format(expirationDate)));
         boosters.put(playerId, boosterProduct.getSkill(), newBooster);
         return true;
     }
 
     public boolean viewPlayerBoosters(Player player) {
+        FileConfiguration config = Main.getPlugin().getConfig();
         String playerId = player.getUniqueId().toString();
+
+        List<String> text = new ArrayList<>(config.getStringList("messages.booster_view.booster_list_header"));
+
+        if (!boosters.containsRow(playerId)) {
+            text.addAll(config.getStringList("messages.booster_view.booster_list_empty"));
+        } else {
+            List<String> itemMessage = config.getStringList("messages.booster_view.booster_list_item");
+            for (String key : boosters.row(playerId).keySet()) {
+               Booster booster = boosters.get(playerId, key);
+               assert booster != null;
+               BoosterProduct boosterProduct = Main.getBoosterProductManager().getBoosterProductById(booster.getBoosterId());
+
+               text.addAll(itemMessage.stream().map(line -> line
+                       .replace("{boosterName}", boosterProduct.getName())
+                       .replace("{boosterSkill}", SkillTranslator.translate(boosterProduct.getSkill()))
+                       .replace("{boosterExpiration}", DateFormatter.format(new Date(booster.getDuration())))).collect(Collectors.toList()));
+            }
+        }
+
+        text.addAll(config.getStringList("messages.booster_view.booster_list_footer"));
+        for (String line : text)
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', line));
+
         return true;
     }
 

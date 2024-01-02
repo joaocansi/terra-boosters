@@ -1,22 +1,50 @@
+# There are two types of messages you can use:
+#
+# If you need a chat message, you just need to insert your message normally.
+# If you need a title message, you must insert {@} which will divide the message in two parts: title and subtitle.
+#
+# 'booster_view' is a bit different and just works as a chat message. Since it throws a booster list
+# I decided to provide as a StringList. I also divided into header, footer and booster item for a better
+# customization.
+#
+# OBS: Some messages may not work with a title since it's sent to a player.
 messages:
-  give_booster_syntax: "&a&l[TerraBoosters] &e/boosters give <player> <booster> <amount>"
-  command_only_ingame: "&a&l[TerraBoosters] &cThis is an exclusive command for in-game players."
-  booster_not_found: "&a&l[TerraBoosters] &cBooster {boosterId} not found."
   player_not_online: "&a&l[TerraBoosters] &cPlayer not found."
   player_inventory_full: "&a&l[TerraBoosters] &cPlayer {playerName} is full of items."
-  booster_gave: "&a&l[TerraBoosters] &eYou gave {boosterAmount}x {boosterName} &eboosters to {receiverName}"
+  command_in_game_only: "&a&l[TerraBoosters] &cThis is an exclusive command for in-game players."
+  command_booster_give_syntax: "&a&l[TerraBoosters] &e/boosters give <player> <booster> <amount>"
+  booster_not_found: "&a&l[TerraBoosters] &cBooster {boosterId} not found."
+  booster_giving_success: "&a&l[TerraBoosters] &eYou gave {boosterAmount}x {boosterName} &eboosters to {receiverName}"
   booster_already_in_use: "&a&l[TerraBoosters]{@}&cThere's a booster with the same skill running."
-  booster_consumed: "&a&l[TerraBoosters]{@}&eBooster {boosterName} &estarted and will expire in {boosterExpiration}"
+  booster_consuming_error: "&a&l[TerraBoosters]{@}&cSomething wrong happended. Please contact an admin."
+  booster_consuming_success: "&a&l[TerraBoosters]{@}&eBooster {boosterName} &estarted and will expire in {boosterExpiration}"
+  booster_view:
+    booster_list_header:
+      - "&a&l[BOOSTERS]"
+      - ""
+    booster_list_footer:
+      - ""
+    booster_list_item:
+      - "{boosterName} - {boosterSkill}"
+      - "Expires in {boosterExpiration}"
+    booster_list_empty:
+      - "&cNo boosters consumed."
 
 settings:
+  # Configures booster expiration date format.
   date_format: "dd/MM/yyyy HH:mm"
   storage:
     type: SQL
 
+# Translates every skill type to a proper name. For example, McMMO refers to mining skill as MINING, but it's proper
+# name could be a way different like miner, mining and etc. You are also allowed to provide a specific color.
+skill_translator:
+  MINING: "&eMiner"
+
 boosters:
   0:
     name: "&d&lMINER"
-    duration: 3600
+    duration: '1h'
     multiplication: 2
     skill: MINING
     item:
