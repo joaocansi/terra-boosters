@@ -23,10 +23,8 @@ messages:
       - "&a&l[BOOSTERS]"
       - ""
     booster_list_footer:
-      - ""
     booster_list_item:
-      - "{boosterName} - {boosterSkill}"
-      - "Expires in {boosterExpiration}"
+      - "{boosterName} &e- &fExpires in {boosterExpiration}"
     booster_list_empty:
       - "&cNo boosters consumed."
 
@@ -39,12 +37,13 @@ settings:
 # Translates every skill type to a proper name. For example, McMMO refers to mining skill as MINING, but it's proper
 # name could be a way different like miner, mining and etc. You are also allowed to provide a specific color.
 skill_translator:
-  MINING: "&eMiner"
+  MINING: "&fMining"
+  MINECRAFT_XP: "&fExperience"
 
 boosters:
   0:
     name: "&d&lMINER"
-    duration: '1h'
+    duration: 3600
     multiplication: 2
     skill: MINING
     item:
@@ -57,6 +56,24 @@ boosters:
         - ' &areceive 2.0x more than usual'
         - ''
         - ' &7Multiplier: &f2.0x'
-        - ' &7Duration: &f1 hour'
+        - ' &7Duration: &f60 min'
+        - ''
+      glow: true
+  1:
+    name: "&a&lXP"
+    duration: 3600
+    multiplication: 2
+    skill: MINECRAFT_XP
+    item:
+      id: EXPERIENCE_BOTTLE
+      name: '&e&lBOOSTER'
+      description:
+        - '&7Type: &a&lXP (MINECRAFT)'
+        - ''
+        - ' &8* &aWith this booster, you will'
+        - ' &areceive 2.0x more than usual'
+        - ''
+        - ' &7Multiplier: &f2.0x'
+        - ' &7Duration: &f60 min'
         - ''
       glow: true
