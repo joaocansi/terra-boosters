@@ -32,7 +32,12 @@ settings:
   # Configures booster expiration date format.
   date_format: "dd/MM/yyyy HH:mm"
   storage:
-    type: SQL
+    type: SQL # If you need MySQL, change the type to MySQL and fill the fields right below.
+    host: localhost
+    port: 3306
+    database: test
+    username: test
+    password: admin
 
 # Translates every skill type to a proper name. For example, McMMO refers to mining skill as MINING, but it's proper
 # name could be a way different like miner, mining and etc. You are also allowed to provide a specific color.

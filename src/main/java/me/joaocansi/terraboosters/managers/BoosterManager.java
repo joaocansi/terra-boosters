@@ -33,8 +33,6 @@ public class BoosterManager {
         int foundBoosters = 0;
 
         for (Booster booster : Objects.requireNonNull(this.boosterDatabase.getAll())) {
-            long currentDate = new Date().getTime();
-
             if (booster.hasExpired()) {
                 deletedBoosters += 1;
                 boosterDatabase.deleteById(booster.getId());

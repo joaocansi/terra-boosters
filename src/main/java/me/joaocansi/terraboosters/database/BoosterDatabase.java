@@ -1,9 +1,10 @@
 package me.joaocansi.terraboosters.database;
 
-import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.stmt.DeleteBuilder;
+import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import me.joaocansi.terraboosters.Main;
@@ -11,6 +12,7 @@ import me.joaocansi.terraboosters.entities.Booster;
 import me.joaocansi.terraboosters.utils.console.Console;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 public final class BoosterDatabase {
@@ -46,13 +48,24 @@ public final class BoosterDatabase {
         }
     }
 
-    public boolean deleteById(int id) {
+    public void deleteById(int id) {
         try {
             dao.deleteById(id);
-            return true;
         } catch (SQLException e) {
             Console.error("Not able to delete booster in database. Here's the error: \n" + e.getMessage());
-            return false;
+        }
+    }
+
+    public void disconnect() {
+        Date date = new Date();
+        try {
+            DeleteBuilder<Booster, Integer> deleteBuilder = dao.deleteBuilder();
+            deleteBuilder
+                    .where()
+                    .gt("expiresIn", date.getTime());
+            dao.delete(deleteBuilder.prepare());
+        } catch (SQLException e) {
+            Console.error("Not able to delete boosters in database. Here's the error: \n" + e.getMessage());
         }
     }
 }
