@@ -25,58 +25,102 @@
 
 ## 💻 Project
 
-a PlotSquared-compatible plugin alongside with FastAsyncWorldEdit. Simplify land excavation for players without the need for manual effort. Elevate your server experience with automated excavation, offering convenience without the need for a revolution. Seamlessly integrate this plugin for a smoother gameplay journey.
+A plugin designed to enhance servers by introducing boosters that multiply players' experience points. This plugin seamlessly integrates with both Minecraft XP and MCMMO skills, offering an enriched gaming experience for users.
 
 ## ✨ Requirements
 
 - Minecraft 1.16+
-- FastAsyncWorldEdit
-- PlotSquared
+- McMMO
 
 ## ⚙️ Configuration
 
 This plugin does not require any previous configuration to run, but you still have the possibility to customize almost everything about it by editing the [config.yml](#-configuration) file.
 
 ```
+# There are two types of messages you can use:
+#
+# If you need a chat message, you just need to insert your message normally.
+# If you need a title message, you must insert {@} which will divide the message in two parts: title and subtitle.
+#
+# 'booster_view' is a bit different and just works as a chat message. Since it throws a booster list
+# I decided to provide as a StringList. I also divided into header, footer and booster item for a better
+# customization.
+#
+# OBS: Some messages may not work with a title since it's sent to a player.
 messages:
-  terra_purge_command: "&2&l[SERVER] &a/terrapurge <name> <amount>"
-  terra_purge_item_gave: "&2&l[SERVER] &aYou gave {amount} excavation item to {player}"
-  terra_purge_confirmed: "&2&l[SERVER] &aPlot excavation confirmed"
-  terra_purge_cancelled: "&2&l[SERVER] &cPlot excavation cancelled"
-  player_not_found: "&2&l[SERVER] &cPlayer not found"
+  player_not_online: "&a&l[TerraBoosters] &cPlayer not found."
+  player_inventory_full: "&a&l[TerraBoosters] &cPlayer {playerName} is full of items."
+  command_in_game_only: "&a&l[TerraBoosters] &cThis is an exclusive command for in-game players."
+  command_booster_give_syntax: "&a&l[TerraBoosters] &e/boosters give <player> <booster> <amount>"
+  booster_not_found: "&a&l[TerraBoosters] &cBooster {boosterId} not found."
+  booster_giving_success: "&a&l[TerraBoosters] &eYou gave {boosterAmount}x {boosterName} &eboosters to {receiverName}"
+  booster_already_in_use: "&a&l[TerraBoosters]{@}&cThere's a booster with the same skill running."
+  booster_consuming_error: "&a&l[TerraBoosters]{@}&cSomething wrong happended. Please contact an admin."
+  booster_consuming_success: "&a&l[TerraBoosters]{@}&eBooster {boosterName} &estarted and will expire in {boosterExpiration}"
+  booster_view:
+    booster_list_header:
+      - "&a&l[BOOSTERS]"
+      - ""
+    booster_list_footer:
+    booster_list_item:
+      - "{boosterName} &e- &fExpires in {boosterExpiration}"
+    booster_list_empty:
+      - "&cNo boosters consumed."
 
-require_confirmation: true
-confirmation_inventory:
-  title: "Escavar Terreno - Confirmar"
-  size: 27
-  items:
-    confirm:
-      slot: 11
-      id: LIME_TERRACOTTA
-      name: "&2&lCONFIRMAR"
-      glow: false
-      description:
-        - ""
-      sound: BLOCK_NOTE_BLOCK_BELL
-    cancel:
-      slot: 15
-      id: RED_TERRACOTTA
-      name: "&c&lCANCELAR"
-      glow: false
-      description:
-        - ""
-      sound: BLOCK_ANVIL_USE
+settings:
+  # Configures booster expiration date format.
+  date_format: "dd/MM/yyyy HH:mm"
+  storage:
+    type: SQL # If you need MySQL, change the type to MySQL and fill the fields right below.
+    host: localhost
+    port: 3306
+    database: test
+    username: test
+    password: admin
 
-item:
-  id: STONE
-  name: "&eLimpador de Terrenos"
-  glow: true
-  description:
-    - ""
-    - "&aClique com o botão direito"
-    - "&ano seu terreno para limpar"
-    - "&atodos os blocos"
-    - ""
+# Translates every skill type to a proper name. For example, McMMO refers to mining skill as MINING, but it's proper
+# name could be a way different like miner, mining and etc. You are also allowed to provide a specific color.
+skill_translator:
+  MINING: "&fMining"
+  MINECRAFT_XP: "&fExperience"
+
+boosters:
+  0:
+    name: "&d&lMINER"
+    duration: 3600
+    multiplication: 2
+    skill: MINING
+    item:
+      id: EXPERIENCE_BOTTLE
+      name: '&e&lBOOSTER'
+      description:
+        - '&7Type: &d&lMINER (MCMMO)'
+        - ''
+        - ' &8* &aWith this booster, you will'
+        - ' &areceive 2.0x more than usual'
+        - ''
+        - ' &7Multiplier: &f2.0x'
+        - ' &7Duration: &f60 min'
+        - ''
+      glow: true
+  1:
+    name: "&a&lXP"
+    duration: 3600
+    multiplication: 2
+    skill: MINECRAFT_XP
+    item:
+      id: EXPERIENCE_BOTTLE
+      name: '&e&lBOOSTER'
+      description:
+        - '&7Type: &a&lXP (MINECRAFT)'
+        - ''
+        - ' &8* &aWith this booster, you will'
+        - ' &areceive 2.0x more than usual'
+        - ''
+        - ' &7Multiplier: &f2.0x'
+        - ' &7Duration: &f60 min'
+        - ''
+      glow: true
 ```
 
 ## 🚀 How to use
