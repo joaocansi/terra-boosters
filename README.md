@@ -133,5 +133,5 @@ These are the following steps to use the plugin:
 3. Reload the server.
 
 To give the item which purge the plot's ground use the following:
-`terrapurge <player_name> <amount>`
-The permission is `terrapurge.admin`
+`booters give <player_name> <booster_id> <amount>`
+The permission is `terraboosters.admin`
