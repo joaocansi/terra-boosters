@@ -1,5 +1,6 @@
 package me.joaocansi.terraboosters.listeners;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 import me.joaocansi.terraboosters.Main;
 import me.joaocansi.terraboosters.entities.Booster;

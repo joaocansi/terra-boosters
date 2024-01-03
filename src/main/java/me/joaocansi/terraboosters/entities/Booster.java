@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @DatabaseTable(tableName = "boosters")
 @NoArgsConstructor
 @Getter
@@ -18,5 +20,9 @@ public class Booster {
     @DatabaseField(canBeNull = false)
     private String playerId;
     @DatabaseField(canBeNull = false)
-    private long duration;
+    private long expiresIn;
+
+    public boolean hasExpired() {
+        return new Date().getTime() > expiresIn;
+    }
 }

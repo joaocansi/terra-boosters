@@ -92,7 +92,7 @@ public class BoosterProductManager {
         }
 
         to.getInventory().addItem(item);
-        Main.getMessageManager().getMessage("booster_gave").send(from, message -> message
+        Main.getMessageManager().getMessage("booster_giving_success").send(from, message -> message
                 .replace("{boosterName}", booster.getName())
                 .replace("{boosterSkill}", booster.getSkill())
                 .replace("{boosterDuration}", String.valueOf(booster.getDuration()))

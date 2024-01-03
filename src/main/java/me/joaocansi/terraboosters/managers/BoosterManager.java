@@ -35,7 +35,7 @@ public class BoosterManager {
         for (Booster booster : Objects.requireNonNull(this.boosterDatabase.getAll())) {
             long currentDate = new Date().getTime();
 
-            if (booster.getDuration() <= currentDate) {
+            if (booster.hasExpired()) {
                 deletedBoosters += 1;
                 boosterDatabase.deleteById(booster.getId());
                 continue;
@@ -56,7 +56,7 @@ public class BoosterManager {
 
         newBooster.setBoosterId(boosterProduct.getId());
         Date expirationDate = new Date(new Date().getTime() + (boosterProduct.getDuration() * 1000));
-        newBooster.setDuration(expirationDate.getTime());
+        newBooster.setExpiresIn(expirationDate.getTime());
         newBooster.setPlayerId(playerId);
 
         Booster findBooster = boosters.get(playerId, boosterProduct.getSkill());
@@ -90,23 +90,26 @@ public class BoosterManager {
 
         List<String> text = new ArrayList<>(config.getStringList("messages.booster_view.booster_list_header"));
 
-        if (!boosters.containsRow(playerId)) {
-            text.addAll(config.getStringList("messages.booster_view.booster_list_empty"));
-        } else {
-            List<String> itemMessage = config.getStringList("messages.booster_view.booster_list_item");
-            for (String key : boosters.row(playerId).keySet()) {
-               Booster booster = boosters.get(playerId, key);
-               assert booster != null;
-               BoosterProduct boosterProduct = Main.getBoosterProductManager().getBoosterProductById(booster.getBoosterId());
+        List<String> itemMessage = config.getStringList("messages.booster_view.booster_list_item");
+        int count = 0;
 
-               text.addAll(itemMessage.stream().map(line -> line
-                       .replace("{boosterName}", boosterProduct.getName())
-                       .replace("{boosterSkill}", SkillTranslator.translate(boosterProduct.getSkill()))
-                       .replace("{boosterExpiration}", DateFormatter.format(new Date(booster.getDuration())))).collect(Collectors.toList()));
-            }
+        for (String key : boosters.row(playerId).keySet()) {
+            Booster booster = boosters.get(playerId, key);
+            if (booster == null || booster.hasExpired())
+                continue;
+
+            count++;
+            BoosterProduct boosterProduct = Main.getBoosterProductManager().getBoosterProductById(booster.getBoosterId());
+            text.addAll(itemMessage.stream().map(line -> line
+                    .replace("{boosterName}", boosterProduct.getName())
+                    .replace("{boosterSkill}", SkillTranslator.translate(boosterProduct.getSkill()))
+                    .replace("{boosterExpiration}", DateFormatter.format(new Date(booster.getExpiresIn())))).collect(Collectors.toList()));
         }
 
+        if (count == 0)
+            text.addAll(config.getStringList("messages.booster_view.booster_list_empty"));
         text.addAll(config.getStringList("messages.booster_view.booster_list_footer"));
+
         for (String line : text)
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', line));
 
@@ -114,6 +117,10 @@ public class BoosterManager {
     }
 
     public Booster getBoosterByPlayerSkill(Player player, String skill) {
+        Booster booster = boosters.get(player.getUniqueId().toString(), skill);
+        if (booster != null && booster.hasExpired())
+            return null;
+
         return boosters.get(player.getUniqueId().toString(), skill);
     }
 }
