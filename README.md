@@ -13,16 +13,6 @@
   <a href="#-how-to-use">🚀 How to use</a>&nbsp;&nbsp;&nbsp;
 </p>
 
-<p align="center">
-   <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License" />
-</p>
-
-
-<p align="center">
-   <img width="820px" src="./.github/assets/game.gif" alt="Gif of game working" />
-</p>
-
-
 ## 💻 Project
 
 A plugin designed to enhance servers by introducing boosters that multiply players' experience points. This plugin seamlessly integrates with both Minecraft XP and MCMMO skills, offering an enriched gaming experience for users.
