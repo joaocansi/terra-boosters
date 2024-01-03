@@ -80,13 +80,10 @@ public final class BoosterDatabase {
     }
 
     public void disconnect() {
-        Date date = new Date();
         try {
-            DeleteBuilder<Booster, Integer> deleteBuilder = dao.deleteBuilder();
-            deleteBuilder
-                    .where()
-                    .lt("expiresIn", date.getTime());
-            dao.delete(deleteBuilder.prepare());
+            for (Booster b : Main.getBoosterManager().getBoosters().values())
+                if (b.hasExpired())
+                    dao.delete(b);
             dao.getConnectionSource().close();
         } catch (Exception e) {
             Console.error("Not able to delete boosters in database. Here's the error: \n" + e.getMessage());
