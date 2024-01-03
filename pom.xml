@@ -39,7 +39,7 @@
             </goals>
             <configuration>
                 <createDependencyReducedPom>false</createDependencyReducedPom>
-                <outputFile>/home/joaocansi/Projects/Minecraft/Server/plugins/TerraBoosters-${project.version}.jar</outputFile>
+<!--                <outputFile>${user.home}/Projects/Minecraft/Server/plugins/TerraBoosters-${project.version}.jar</outputFile>-->
             </configuration>
           </execution>
         </executions>
