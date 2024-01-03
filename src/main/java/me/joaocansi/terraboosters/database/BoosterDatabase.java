@@ -87,7 +87,8 @@ public final class BoosterDatabase {
                     .where()
                     .lt("expiresIn", date.getTime());
             dao.delete(deleteBuilder.prepare());
-        } catch (SQLException e) {
+            dao.getConnectionSource().close();
+        } catch (Exception e) {
             Console.error("Not able to delete boosters in database. Here's the error: \n" + e.getMessage());
         }
     }
