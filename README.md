@@ -122,6 +122,6 @@ These are the following steps to use the plugin:
 2. Move `.jar` file to your `plugins` folder
 3. Reload the server.
 
-To give the item which purge the plot's ground use the following:
+To give the item use the following:
 `booters give <player_name> <booster_id> <amount>`
 The permission is `terraboosters.admin`
